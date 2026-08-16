@@ -1,0 +1,16 @@
+[workspace]
+members = ["cargo:."]
+
+[dist]
+cargo-dist-version = "0.32.0"
+ci = "github"
+installers = ["shell", "homebrew"]
+tap = "ynqa/homebrew-tap"
+targets = [
+  "aarch64-apple-darwin",
+  "x86_64-apple-darwin",
+]
+publish-jobs = ["homebrew"]
+pr-run-mode = "plan"
+install-path = "CARGO_HOME"
+install-updater = false

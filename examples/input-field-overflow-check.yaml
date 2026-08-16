@@ -1,0 +1,235 @@
+name: input-field-overflow-check
+
+# Visual test fixture for a workflow whose field list is taller than the
+# terminal.
+#
+# Suggested checks:
+#   1. Resize the terminal to 24 rows and select a destination.
+#   2. Move past field_15 with Tab and confirm whether focus stays visible.
+#   3. Repeat around field_24, field_40, and field_64.
+#   4. Move back with Shift+Tab and try scrolling and clicking fields.
+#
+# The numbered names make the visible range and current position unambiguous.
+inputs:
+  field_01_top_marker:
+    type: textarea
+
+  field_02:
+    type: textarea
+
+  field_03:
+    type: textarea
+
+  field_04:
+    type: textarea
+
+  field_05:
+    type: textarea
+
+  field_06:
+    type: textarea
+
+  field_07:
+    type: textarea
+
+  field_08_select:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_09:
+    type: textarea
+
+  field_10:
+    type: textarea
+
+  field_11:
+    type: textarea
+
+  field_12:
+    type: textarea
+
+  field_13:
+    type: textarea
+
+  field_14:
+    type: textarea
+
+  field_15_near_initial_viewport_end:
+    type: textarea
+
+  field_16_below_initial_viewport:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_17:
+    type: textarea
+
+  field_18:
+    type: textarea
+
+  field_19:
+    type: textarea
+
+  field_20:
+    type: textarea
+
+  field_21:
+    type: textarea
+
+  field_22:
+    type: textarea
+
+  field_23:
+    type: textarea
+
+  field_24_terminal_24_marker:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_25_after_terminal_24:
+    type: textarea
+
+  field_26:
+    type: textarea
+
+  field_27:
+    type: textarea
+
+  field_28:
+    type: textarea
+
+  field_29:
+    type: textarea
+
+  field_30:
+    type: textarea
+
+  field_31:
+    type: textarea
+
+  field_32_midpoint_marker:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_33:
+    type: textarea
+
+  field_34:
+    type: textarea
+
+  field_35:
+    type: textarea
+
+  field_36:
+    type: textarea
+
+  field_37:
+    type: textarea
+
+  field_38:
+    type: textarea
+
+  field_39:
+    type: textarea
+
+  field_40_terminal_40_marker:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_41_after_terminal_40:
+    type: textarea
+
+  field_42:
+    type: textarea
+
+  field_43:
+    type: textarea
+
+  field_44:
+    type: textarea
+
+  field_45:
+    type: textarea
+
+  field_46:
+    type: textarea
+
+  field_47:
+    type: textarea
+
+  field_48_select:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_49:
+    type: textarea
+
+  field_50:
+    type: textarea
+
+  field_51:
+    type: textarea
+
+  field_52:
+    type: textarea
+
+  field_53:
+    type: textarea
+
+  field_54:
+    type: textarea
+
+  field_55:
+    type: textarea
+
+  field_56_select:
+    type: select
+    candidates:
+      values: [alpha, beta, gamma]
+
+  field_57:
+    type: textarea
+
+  field_58:
+    type: textarea
+
+  field_59:
+    type: textarea
+
+  field_60:
+    type: textarea
+
+  field_61:
+    type: textarea
+
+  field_62:
+    type: textarea
+
+  field_63:
+    type: textarea
+
+  field_64_last_marker:
+    type: select
+    allow_empty: false
+    candidates:
+      values: [reached-the-end, not-reached]
+
+output:
+  template: |
+    # Input field overflow check
+
+    - First field: {{ inputs.field_01_top_marker }}
+    - Initial viewport boundary: {{ inputs.field_15_near_initial_viewport_end }}
+    - First field below the initial viewport: {{ inputs.field_16_below_initial_viewport }}
+    - 24-row marker: {{ inputs.field_24_terminal_24_marker }}
+    - After 24 rows: {{ inputs.field_25_after_terminal_24 }}
+    - Midpoint: {{ inputs.field_32_midpoint_marker }}
+    - 40-row marker: {{ inputs.field_40_terminal_40_marker }}
+    - After 40 rows: {{ inputs.field_41_after_terminal_40 }}
+    - Last field: {{ inputs.field_64_last_marker }}
