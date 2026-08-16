@@ -15,7 +15,7 @@ async-trait = "0.1.89"
 clap = { version = "4.5.60", features = ["derive"] }
 futures = "0.3.32"
 handlebars = "6.4.3"
-promkit = { git = "https://github.com/ynqa/promkit", rev = "fc43fe285bac1784e343c640a5fff54f4b929586", version = "=0.15.0", features = ["spinner", "terminal-session", "text", "texteditor"] }
+promkit = { version = "0.15.0", features = ["spinner", "terminal-session", "text", "texteditor"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 serde_yaml = "0.9.34"
