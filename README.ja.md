@@ -36,17 +36,18 @@ Convey は、エージェントに判断させたくない値をユーザーが�
 - ターミナルアプリケーション、window、tab、pane を検索できるツリー
 - ディレクトリからのワークフロー選択、またはワークフローファイルの直接起動
 - 送信先、ワークフロー、入力項目、選択候補を横断するシームレスなキーボード操作
-- Ghostty と iTerm2 のペインへの直接送信
+- Ghostty、iTerm2、tmux のペインへの直接送信
 - 候補取得コマンドや送信先取得に失敗した場合のエラー表示と再試行
 
 ## 必要な環境
 
-- macOS
-- Ghostty または iTerm2
-- macOS Automation の確認が表示されたときに、使用中のターミナルが送信先アプリケーションを操作する権限
+- 次のいずれかの送信先
+  - `tmux` コマンドを利用できるプラットフォーム上の tmux
+  - macOS 上の Ghostty または iTerm2
+- Ghostty と iTerm2 では、macOS Automation の確認が表示されたときに、使用中のターミナルが送信先アプリケーションを操作する権限
 - `kubectl` など、ワークフローの候補取得コマンドで使用するプログラム
 
-現在対応している送信先アプリケーションは Ghostty と iTerm2 です。
+現在対応している送信先は Ghostty、iTerm2、tmux です。tmux 連携は `tmux` コマンドを直接呼び出すため、プラットフォーム固有のアプリケーション操作を必要としません。
 
 ## インストール
 
@@ -69,7 +70,7 @@ $ git clone https://github.com/ynqa/convey.git
 $ convey --terminal ghostty convey/examples
 ```
 
-iTerm2 を使用する場合は、`ghostty` を `iterm2` に置き換えてください。入力画面では、送信先のペイン、`convey/examples` に含まれる YAML ファイル、各入力項目の値を順番に選択し、生成した Markdown を送信できます。
+iTerm2 または tmux を使用する場合は、`ghostty` を `iterm2` または `tmux` に置き換えてください。入力画面では、送信先のペイン、`convey/examples` に含まれる YAML ファイル、各入力項目の値を順番に選択し、生成した Markdown を送信できます。
 
 1つのワークフローを直接起動することもできます。この場合もワークフローセレクターは画面に残りますが、指定したファイルが最初から選択されています。
 
@@ -86,6 +87,7 @@ Convey が問い合わせるアプリケーションは、`-t` または `--term
 ```console
 $ convey --terminal ghostty examples
 $ convey --terminal iterm2 examples
+$ convey --terminal tmux examples
 $ convey --terminal ghostty,iterm2 examples
 ```
 
@@ -274,7 +276,7 @@ $ cargo test
 $ cargo clippy --all-targets -- -D warnings
 ```
 
-ターミナル連携は、`src/automation/ghostty` と `src/automation/iterm2` にある独立した AppleScript として実装されています。送信先の検出や送信処理を debug する場合は、`osascript` を使用して直接実行できます。
+Ghostty と iTerm2 の連携は、`src/automation/ghostty` と `src/automation/iterm2` にある独立した AppleScript として実装されています。送信先の検出や送信処理を debug する場合は、`osascript` を使用して直接実行できます。プラットフォーム共通の tmux 連携は `src/automation/tmux` にあり、`tmux` CLI を直接呼び出します。
 
 ### リリース
 

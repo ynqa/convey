@@ -1168,7 +1168,7 @@ mod tests {
 
     fn target() -> TerminalTarget {
         TerminalTarget {
-            application: TerminalApplication::Ghostty,
+            application: TerminalApplication::Tmux,
             terminal: terminal(),
         }
     }
@@ -1177,7 +1177,7 @@ mod tests {
         InputScreen::new(
             "test",
             definitions,
-            BTreeSet::from([TerminalApplication::Ghostty]),
+            BTreeSet::from([TerminalApplication::Tmux]),
         )
     }
 
@@ -1273,7 +1273,7 @@ mod tests {
             Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/kubernetes-investigation.yaml");
 
         let screen =
-            InputScreen::from_workflow_path(&path, BTreeSet::from([TerminalApplication::Ghostty]))
+            InputScreen::from_workflow_path(&path, BTreeSet::from([TerminalApplication::Tmux]))
                 .unwrap();
 
         assert_eq!(
@@ -1295,7 +1295,7 @@ mod tests {
         let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("examples");
 
         let screen =
-            InputScreen::from_workflow_path(&path, BTreeSet::from([TerminalApplication::Ghostty]))
+            InputScreen::from_workflow_path(&path, BTreeSet::from([TerminalApplication::Tmux]))
                 .unwrap();
 
         assert!(screen.workflow.selected().is_none());
@@ -1608,7 +1608,7 @@ mod tests {
                 vec![
                     target(),
                     TerminalTarget {
-                        application: TerminalApplication::Ghostty,
+                        application: TerminalApplication::Tmux,
                         terminal: Terminal {
                             id: "43".into(),
                             name: "other".into(),

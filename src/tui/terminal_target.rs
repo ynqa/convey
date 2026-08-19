@@ -10,10 +10,10 @@ use tokio::{
 
 mod tree_select;
 
+#[cfg(target_os = "macos")]
+use crate::automation::{ghostty::GhosttyAutomation, iterm2::ITerm2Automation};
 use crate::{
-    automation::{
-        Terminal, TerminalAutomation, ghostty::GhosttyAutomation, iterm2::ITerm2Automation,
-    },
+    automation::{Terminal, TerminalAutomation, tmux::TmuxAutomation},
     cli::TerminalApplication,
     tui::NavigationDirection,
 };
@@ -248,8 +248,11 @@ async fn list_targets(applications: &BTreeSet<TerminalApplication>) -> Result<Ve
     let mut targets = Vec::new();
     for &application in applications {
         let terminals = match application {
+            #[cfg(target_os = "macos")]
             TerminalApplication::Ghostty => GhosttyAutomation.list_targets().await,
+            #[cfg(target_os = "macos")]
             TerminalApplication::Iterm2 => ITerm2Automation.list_targets().await,
+            TerminalApplication::Tmux => TmuxAutomation.list_targets().await,
         }
         .with_context(|| format!("failed to list {} targets", application.name()))?;
         targets.extend(terminals.into_iter().map(|terminal| TerminalTarget {
@@ -298,8 +301,11 @@ fn terminal_label(target: &TerminalTarget) -> String {
 
 const fn terminal_application_label(application: TerminalApplication) -> &'static str {
     match application {
+        #[cfg(target_os = "macos")]
         TerminalApplication::Ghostty => "Ghostty",
+        #[cfg(target_os = "macos")]
         TerminalApplication::Iterm2 => "iTerm2",
+        TerminalApplication::Tmux => "tmux",
     }
 }
 
@@ -310,7 +316,7 @@ mod tests {
 
     fn target(id: &str, terminal_index: usize) -> TerminalTarget {
         TerminalTarget {
-            application: TerminalApplication::Ghostty,
+            application: TerminalApplication::Tmux,
             terminal: Terminal {
                 id: id.into(),
                 name: format!("pane-{id}"),
@@ -323,9 +329,8 @@ mod tests {
     }
 
     #[test]
-    fn selects_a_ghostty_pane() {
-        let mut selector =
-            TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Ghostty]));
+    fn selects_a_terminal_pane() {
+        let mut selector = TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Tmux]));
         selector.apply_refresh(vec![target("one", 1), target("two", 2)]);
 
         selector.handle_event(&Event::Key(KeyEvent::new(
@@ -339,8 +344,7 @@ mod tests {
 
     #[test]
     fn removes_a_saved_pane_when_it_disappears() {
-        let mut selector =
-            TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Ghostty]));
+        let mut selector = TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Tmux]));
         selector.apply_refresh(vec![target("one", 1)]);
         assert!(selector.save());
 
@@ -352,8 +356,7 @@ mod tests {
     #[test]
     fn finishes_refreshing_when_the_targets_are_unchanged() {
         let targets = vec![target("one", 1)];
-        let mut selector =
-            TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Ghostty]));
+        let mut selector = TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Tmux]));
         selector.apply_refresh(targets.clone());
         selector.apply_update(TerminalTargetUpdate::RefreshStarted);
 
@@ -364,8 +367,7 @@ mod tests {
 
     #[tokio::test]
     async fn requests_an_immediate_refresh_only_once_while_loading() {
-        let mut selector =
-            TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Ghostty]));
+        let mut selector = TerminalTargetSelector::new(BTreeSet::from([TerminalApplication::Tmux]));
         let (refresh_request_tx, mut refresh_request_rx) = mpsc::channel(1);
         selector.refresh_request_tx = Some(refresh_request_tx);
 

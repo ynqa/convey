@@ -9,9 +9,9 @@ mod workflow;
 use std::io;
 
 use anyhow::{Context, Result};
-use automation::{
-    Terminal, TerminalAutomation, ghostty::GhosttyAutomation, iterm2::ITerm2Automation,
-};
+use automation::{Terminal, TerminalAutomation, tmux::TmuxAutomation};
+#[cfg(target_os = "macos")]
+use automation::{ghostty::GhosttyAutomation, iterm2::ITerm2Automation};
 use cli::{Cli, TerminalApplication};
 use promkit::{
     TerminalModes, TerminalSession,
@@ -46,11 +46,16 @@ async fn main() -> Result<()> {
 
         let markdown = submission.workflow.render(&submission.values)?;
         match submission.target.application {
+            #[cfg(target_os = "macos")]
             TerminalApplication::Ghostty => {
                 deliver(&GhosttyAutomation, &submission.target.terminal, &markdown).await
             }
+            #[cfg(target_os = "macos")]
             TerminalApplication::Iterm2 => {
                 deliver(&ITerm2Automation, &submission.target.terminal, &markdown).await
+            }
+            TerminalApplication::Tmux => {
+                deliver(&TmuxAutomation, &submission.target.terminal, &markdown).await
             }
         }
         .context("failed to deliver rendered Markdown")?;

@@ -2,8 +2,11 @@ use anyhow::Result;
 use async_trait::async_trait;
 use serde::Deserialize;
 
+#[cfg(target_os = "macos")]
 pub mod ghostty;
+#[cfg(target_os = "macos")]
 pub mod iterm2;
+pub mod tmux;
 
 #[cfg(target_os = "macos")]
 mod macos;

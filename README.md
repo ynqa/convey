@@ -62,19 +62,22 @@ decisions are made before the request reaches the agent.
 - Workflow selection from a directory, or direct launch of one workflow file
 - Seamless keyboard navigation across destinations, workflows, fields, and
   select candidates
-- Direct delivery and submission to Ghostty and iTerm2 panes
+- Direct delivery and submission to Ghostty, iTerm2, and tmux panes
 - In-place errors and retries for failed candidate commands and destination
   discovery
 
 ## Requirements
 
-- macOS
-- Ghostty or iTerm2
-- Permission for your terminal to control the destination application through
-  macOS Automation when prompted
+- One of the supported destinations:
+  - tmux on a platform where the `tmux` command is available
+  - Ghostty or iTerm2 on macOS
+- For Ghostty and iTerm2, permission for your terminal to control the
+  destination application through macOS Automation when prompted
 - Any programs used by workflow candidate commands, such as `kubectl`
 
-Ghostty and iTerm2 are the currently supported destination applications.
+Ghostty, iTerm2, and tmux are the currently supported destinations. The tmux
+integration invokes the `tmux` command directly and therefore works without
+platform-specific application automation.
 
 ## Installation
 
@@ -97,9 +100,9 @@ $ git clone https://github.com/ynqa/convey.git
 $ convey --terminal ghostty convey/examples
 ```
 
-Replace `ghostty` with `iterm2` when using iTerm2. The input screen will let
-you choose a destination pane, choose a YAML file from `convey/examples`,
-complete its fields, and submit the rendered Markdown.
+Replace `ghostty` with `iterm2` or `tmux` for those destinations. The input
+screen will let you choose a destination pane, choose a YAML file from
+`convey/examples`, complete its fields, and submit the rendered Markdown.
 
 You can also launch one workflow directly. The workflow selector remains in
 the interface, with the supplied file already selected:
@@ -119,6 +122,7 @@ Use `-t` or `--terminal` to control which applications Convey queries:
 ```console
 $ convey --terminal ghostty examples
 $ convey --terminal iterm2 examples
+$ convey --terminal tmux examples
 $ convey --terminal ghostty,iterm2 examples
 ```
 
@@ -333,9 +337,11 @@ $ cargo test
 $ cargo clippy --all-targets -- -D warnings
 ```
 
-The terminal integrations are implemented as standalone AppleScripts under
-`src/automation/ghostty` and `src/automation/iterm2`. They can be run directly
-with `osascript` when debugging destination discovery or delivery.
+The Ghostty and iTerm2 integrations are implemented as standalone AppleScripts
+under `src/automation/ghostty` and `src/automation/iterm2`. They can be run
+directly with `osascript` when debugging destination discovery or delivery.
+The platform-independent tmux integration under `src/automation/tmux` invokes
+the `tmux` CLI directly.
 
 ### Releasing
 
