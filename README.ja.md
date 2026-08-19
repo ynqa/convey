@@ -10,7 +10,7 @@ Convey は、繰り返し作成するプロンプトを対話的なターミナ�
 
 ## 開発の動機
 
-私は普段、Claude や Codex に Kubernetes や Grafana を使った調査を依頼しています。例えば Grafana で異常に気づき、`CrashLoopBackOff` になっている Pod の原因を調べてもらう、といった依頼です。
+私は普段、Kubernetes 環境で起きた問題の調査を Claude や Codex に依頼しています。例えば、Grafana で異常に気づいたときに、`CrashLoopBackOff` になっている Pod の原因を調べてもらう、といった具合です。
 
 調査を始めてもらうには、単に「この Pod を調べて」と伝えるだけでは足りません。どの `context` の、どの `namespace` にある、どの `kind` の、どの Pod なのかを指定する必要があります。これらはエージェントに推測してほしい情報ではなく、調査を依頼する自分が決めたい情報です。
 

@@ -15,9 +15,9 @@ before asking an agent to investigate it.
 
 ## Motivation
 
-I often ask Claude or Codex to investigate issues using Kubernetes and Grafana.
-For example, I might notice an anomaly in Grafana and ask one of them to find
-out why a Pod is in `CrashLoopBackOff`.
+I often ask Claude or Codex to investigate problems in Kubernetes environments.
+For example, after noticing an anomaly in Grafana, I might ask one of them to
+find out why a Pod is in `CrashLoopBackOff`.
 
 Simply saying "investigate this Pod" is not enough to get started. I need to
 specify which `context` to use, which `namespace` it is in, its `kind`, and the
